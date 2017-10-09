@@ -6,7 +6,7 @@
 /*   By: atyrode <atyrode@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/30 18:42:48 by atyrode           #+#    #+#             */
-/*   Updated: 2017/10/07 17:01:34 by atyrode          ###   ########.fr       */
+/*   Updated: 2017/10/09 18:44:01 by atyrode          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 void	image_set_pixel(t_mlx *mlx)
 {
-	if (COORD_X < 0 || COORD_X >= W_WIDTH || COORD_Y < 0 || COORD_Y >= W_HEIGHT)
+	if (X1 < 0 || X1 >= W_WIDTH || Y1 < 0 || Y1 >= W_HEIGHT)
 		return ;
-	*(int *)(mlx->image->ptr + ((COORD_X + COORD_Y * W_WIDTH) * BPP)) = COLOR;
+	printf ("(%d + %d * %d) * %d = %d\n", X1, Y1, W_WIDTH, BPP, COLOR);
+	*(int *)(mlx->image->ptr + ((X1 + Y1 * W_WIDTH) * BPP)) = COLOR;
 }
 
 void	*delete_image(t_mlx *mlx)

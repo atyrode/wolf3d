@@ -13,7 +13,9 @@ int		main(int argc, char **argv)
 	if (parsing(filename, mlx) == 0)
 		printf ("parsing -> OK!\n");
 	hooks(mlx);
+	raytracing(mlx);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->image->image, 0, 0);
+	printf ("mlx loop!\n");
 	mlx_loop(mlx->mlx);
 	return (0);
 }
