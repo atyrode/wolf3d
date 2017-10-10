@@ -8,6 +8,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
 
 #define W_WIDTH 896
 #define W_HEIGHT 800
@@ -66,6 +67,11 @@
 #define Y_INCR mlx->algo->Yincr
 #define RX mlx->algo->Rx
 #define RY mlx->algo->Ry
+#define MOVE_SPEED mlx->rt->move_speed
+#define ROT_SPEED mlx->rt->rot_speed
+#define FRAME mlx->rt->frame
+#define OLD_DIR_X mlx->rt->old_dir_x
+#define OLD_PLANE_X mlx->rt->old_plane_x
 
 typedef struct			s_rosette {
 
@@ -118,6 +124,7 @@ typedef struct			s_rt
 	double		plane_y;
 	double		cur_frame;
 	double		old_frame;
+	double		frame;
 	double		camera_x;
 	double		camera_y;
 	double		ray_pos_x;
@@ -139,6 +146,10 @@ typedef struct			s_rt
 	int			draw_start;
 	int			draw_end;
 	int			wall_color;
+	double		move_speed;
+	double		rot_speed;
+	double		old_dir_x;
+	double		old_plane_x;
 }						t_rt;
 
 typedef struct			s_mlx
@@ -161,6 +172,7 @@ t_mlx		*mlx_free(t_mlx *mlx);
 void		*new_image(t_mlx *mlx);
 void		*delete_image(t_mlx *mlx);
 void		image_set_pixel(t_mlx *mlx);
+void    	rt_init(t_mlx *mlx);
 void		raytracing(t_mlx *mlx);
 int			parsing(char *filename, t_mlx *mlx);
 void		hooks(t_mlx *mlx);
@@ -169,5 +181,6 @@ int			mouse_hook(int button, int x, int y, t_mlx *mlx);
 int			mouse_mov(int x, int y, t_mlx *mlx);
 int			key_func(int keycode, t_mlx *mlx);
 void		ft_line_tracer(t_mlx *mlx, int i);
+void   		 redraw_raytracing(t_mlx *mlx);
 
 #endif

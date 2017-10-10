@@ -6,7 +6,7 @@
 /*   By: atyrode <atyrode@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/05 15:27:01 by atyrode           #+#    #+#             */
-/*   Updated: 2017/10/07 17:49:42 by atyrode          ###   ########.fr       */
+/*   Updated: 2017/10/10 20:26:27 by atyrode          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,41 @@ int			key_func(int keycode, t_mlx *mlx)
 	{}
 		//p
 	if (KEYCODE == 124)
-	{}
+	{
+		OLD_DIR_X = DIR_X;
+		DIR_X = DIR_X * cos(-ROT_SPEED) - DIR_Y * sin(-ROT_SPEED);
+		DIR_Y = OLD_DIR_X * sin(-ROT_SPEED) + DIR_Y * cos(-ROT_SPEED);
+		OLD_PLANE_X = PLANE_X;
+		PLANE_X = PLANE_X * cos(-ROT_SPEED) - PLANE_Y * sin(-ROT_SPEED);
+		PLANE_Y = OLD_PLANE_X * sin(-ROT_SPEED) + PLANE_Y * cos(-ROT_SPEED);
+		printf ("\n\n-------------- fleche gauche ---------------\n\n");
+	}
 		//fleche gauche
 	if (KEYCODE == 123)
-	{}
+	{
+		OLD_DIR_X = DIR_X;
+		DIR_X = DIR_X * cos(ROT_SPEED) - DIR_Y * sin(ROT_SPEED);
+		DIR_Y = OLD_DIR_X * sin(ROT_SPEED) + DIR_Y * cos(ROT_SPEED);
+		OLD_PLANE_X = PLANE_X;
+		PLANE_X = PLANE_X * cos(ROT_SPEED) - PLANE_Y * sin(ROT_SPEED);
+		PLANE_Y = OLD_PLANE_X * sin(ROT_SPEED) + PLANE_Y * cos(ROT_SPEED);
+	}
 		//fleche droite
 	if (KEYCODE == 126)
-	{}
+	{
+		if (GRID[(int)(POS_X + DIR_X * MOVE_SPEED)][(int)(POS_Y)] == 0)
+			POS_X += DIR_X * MOVE_SPEED;
+		if (GRID[(int)(POS_X)][(int)(POS_Y + DIR_Y * MOVE_SPEED)] == 0)
+			POS_Y += DIR_Y * MOVE_SPEED;
+	}
 		//fleche haute
 	if (KEYCODE == 125)
-	{}
+	{
+		if (GRID[(int)(POS_X + DIR_X * MOVE_SPEED)][(int)(POS_Y)] == 0)
+			POS_X -= DIR_X * MOVE_SPEED;
+		if (GRID[(int)(POS_X)][(int)(POS_Y + DIR_Y * MOVE_SPEED)] == 0)
+			POS_Y -= DIR_Y * MOVE_SPEED;
+	}
 		//fleche basse
 	if (KEYCODE == 18)
 	{}
@@ -85,5 +110,7 @@ int			key_func(int keycode, t_mlx *mlx)
 	if (KEYCODE == 36)
 	{}
 		//touche entrée
+
+	redraw_raytracing(mlx);
 	return (0);
 }
