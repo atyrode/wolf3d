@@ -180,6 +180,8 @@ int 		loop_hook(t_mlx *mlx);
 int			mouse_hook(int button, int x, int y, t_mlx *mlx);
 int			mouse_mov(int x, int y, t_mlx *mlx);
 int			key_func(int keycode, t_mlx *mlx);
+int			key_press(int keycode, t_mlx *mlx);
+int			hook_close(t_mlx *mlx);
 void		ft_line_tracer(t_mlx *mlx, int i);
 void   		 redraw_raytracing(t_mlx *mlx);
 

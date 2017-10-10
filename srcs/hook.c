@@ -6,7 +6,7 @@
 /*   By: atyrode <atyrode@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/05 15:27:01 by atyrode           #+#    #+#             */
-/*   Updated: 2017/10/10 20:26:27 by atyrode          ###   ########.fr       */
+/*   Updated: 2017/10/10 22:06:37 by atyrode          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,62 @@ void		hooks(t_mlx *mlx)
 {
 	mlx_mouse_hook(mlx->win, mouse_hook, mlx);
 	mlx_hook(mlx->win, 6, 0, mouse_mov, mlx);
-	mlx_key_hook(mlx->win, key_func, mlx);
+	mlx_hook(mlx->win, 2, 1L << 0, key_press, mlx);
+	mlx_hook(mlx->win, 17, 1L << 0, hook_close, mlx);
+	//mlx_key_hook(mlx->win, key_func, mlx);
 	mlx_loop_hook(mlx->mlx, loop_hook, mlx);
+}
+
+int			key_press(int keycode, t_mlx *mlx)
+{
+	KEYCODE = keycode;
+	//printf ("keycode = %d\n", keycode);
+	if (KEYCODE == 124)
+	{
+		OLD_DIR_X = DIR_X;
+		DIR_X = DIR_X * cos(-ROT_SPEED) - DIR_Y * sin(-ROT_SPEED);
+		DIR_Y = OLD_DIR_X * sin(-ROT_SPEED) + DIR_Y * cos(-ROT_SPEED);
+		OLD_PLANE_X = PLANE_X;
+		PLANE_X = PLANE_X * cos(-ROT_SPEED) - PLANE_Y * sin(-ROT_SPEED);
+		PLANE_Y = OLD_PLANE_X * sin(-ROT_SPEED) + PLANE_Y * cos(-ROT_SPEED);
+	}
+		//fleche gauche
+	if (KEYCODE == 123)
+	{
+		OLD_DIR_X = DIR_X;
+		DIR_X = DIR_X * cos(ROT_SPEED) - DIR_Y * sin(ROT_SPEED);
+		DIR_Y = OLD_DIR_X * sin(ROT_SPEED) + DIR_Y * cos(ROT_SPEED);
+		OLD_PLANE_X = PLANE_X;
+		PLANE_X = PLANE_X * cos(ROT_SPEED) - PLANE_Y * sin(ROT_SPEED);
+		PLANE_Y = OLD_PLANE_X * sin(ROT_SPEED) + PLANE_Y * cos(ROT_SPEED);
+	}
+		//fleche droite
+	if (KEYCODE == 126)
+	{
+		if (GRID[(int)(POS_X + DIR_X * MOVE_SPEED)][(int)(POS_Y)] == 0)
+			POS_X += DIR_X * MOVE_SPEED;
+		if (GRID[(int)(POS_X)][(int)(POS_Y + DIR_Y * MOVE_SPEED)] == 0)
+			POS_Y += DIR_Y * MOVE_SPEED;
+	}
+		//fleche haute
+	if (KEYCODE == 125)
+	{
+		if (GRID[(int)(POS_X + DIR_X * MOVE_SPEED)][(int)(POS_Y)] == 0)
+			POS_X -= DIR_X * MOVE_SPEED;
+		if (GRID[(int)(POS_X)][(int)(POS_Y + DIR_Y * MOVE_SPEED)] == 0)
+			POS_Y -= DIR_Y * MOVE_SPEED;
+	}
+	if (KEYCODE == 53)
+		mlx_free(mlx);
+	redraw_raytracing(mlx);
+	return (0);
+}
+
+int			hook_close(t_mlx *mlx)
+{
+	(void)mlx;
+	exit(EXIT_SUCCESS);
+	return (0);
 }
 
 int			loop_hook(t_mlx *mlx)
@@ -69,7 +123,6 @@ int			key_func(int keycode, t_mlx *mlx)
 		OLD_PLANE_X = PLANE_X;
 		PLANE_X = PLANE_X * cos(-ROT_SPEED) - PLANE_Y * sin(-ROT_SPEED);
 		PLANE_Y = OLD_PLANE_X * sin(-ROT_SPEED) + PLANE_Y * cos(-ROT_SPEED);
-		printf ("\n\n-------------- fleche gauche ---------------\n\n");
 	}
 		//fleche gauche
 	if (KEYCODE == 123)
