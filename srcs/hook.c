@@ -6,7 +6,7 @@
 /*   By: atyrode <atyrode@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/05 15:27:01 by atyrode           #+#    #+#             */
-/*   Updated: 2017/10/10 22:06:37 by atyrode          ###   ########.fr       */
+/*   Updated: 2017/10/11 21:08:33 by atyrode          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,17 +48,18 @@ int			key_press(int keycode, t_mlx *mlx)
 		//fleche droite
 	if (KEYCODE == 126)
 	{
-		if (GRID[(int)(POS_X + DIR_X * MOVE_SPEED)][(int)(POS_Y)] == 0)
+		if (GRID[(int)(POS_X + (DIR_X * MOVE_SPEED) * 1.2)][(int)(POS_Y)] == 0)
 			POS_X += DIR_X * MOVE_SPEED;
-		if (GRID[(int)(POS_X)][(int)(POS_Y + DIR_Y * MOVE_SPEED)] == 0)
+		if (GRID[(int)(POS_X)][(int)(POS_Y + (DIR_Y * MOVE_SPEED) * 1.2)] == 0)
 			POS_Y += DIR_Y * MOVE_SPEED;
+
 	}
-		//fleche haute
+		//fleche haute`
 	if (KEYCODE == 125)
 	{
-		if (GRID[(int)(POS_X + DIR_X * MOVE_SPEED)][(int)(POS_Y)] == 0)
+		if (GRID[(int)(POS_X + (DIR_X * MOVE_SPEED) * 1.2)][(int)(POS_Y)] == 0)
 			POS_X -= DIR_X * MOVE_SPEED;
-		if (GRID[(int)(POS_X)][(int)(POS_Y + DIR_Y * MOVE_SPEED)] == 0)
+		if (GRID[(int)(POS_X)][(int)(POS_Y + (DIR_Y * MOVE_SPEED) * 1.2)] == 0)
 			POS_Y -= DIR_Y * MOVE_SPEED;
 	}
 	if (KEYCODE == 53)
