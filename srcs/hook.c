@@ -6,7 +6,7 @@
 /*   By: atyrode <atyrode@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/05 15:27:01 by atyrode           #+#    #+#             */
-/*   Updated: 2017/10/11 21:08:33 by atyrode          ###   ########.fr       */
+/*   Updated: 2017/10/12 14:52:51 by atyrode          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,21 +49,30 @@ int			key_press(int keycode, t_mlx *mlx)
 	if (KEYCODE == 126)
 	{
 		if (GRID[(int)(POS_X + (DIR_X * MOVE_SPEED) * 1.2)][(int)(POS_Y)] == 0)
-			POS_X += DIR_X * MOVE_SPEED;
+			if ((POS_X + DIR_X * MOVE_SPEED) >= 1
+			&& (POS_X + DIR_X * MOVE_SPEED) < Y_NBR - 1)
+				POS_X += DIR_X * MOVE_SPEED;
 		if (GRID[(int)(POS_X)][(int)(POS_Y + (DIR_Y * MOVE_SPEED) * 1.2)] == 0)
-			POS_Y += DIR_Y * MOVE_SPEED;
+			if ((POS_Y + DIR_Y * MOVE_SPEED) >= 1
+			&& (POS_Y + DIR_Y * MOVE_SPEED) < Y_NBR - 1)
+				POS_Y += DIR_Y * MOVE_SPEED;
 
 	}
 		//fleche haute`
 	if (KEYCODE == 125)
 	{
-		if (GRID[(int)(POS_X + (DIR_X * MOVE_SPEED) * 1.2)][(int)(POS_Y)] == 0)
+		if (GRID[(int)(POS_X - (DIR_X * MOVE_SPEED) * 1.2)][(int)(POS_Y)] == 0)
+			if ((POS_X - DIR_X * MOVE_SPEED) >= 1
+			&& (POS_X - DIR_X * MOVE_SPEED) < Y_NBR - 1)
 			POS_X -= DIR_X * MOVE_SPEED;
-		if (GRID[(int)(POS_X)][(int)(POS_Y + (DIR_Y * MOVE_SPEED) * 1.2)] == 0)
+		if (GRID[(int)(POS_X)][(int)(POS_Y - (DIR_Y * MOVE_SPEED) * 1.2)] == 0)
+			if ((POS_Y - DIR_Y * MOVE_SPEED) >= 1
+			&& (POS_Y - DIR_Y * MOVE_SPEED) < Y_NBR - 1)
 			POS_Y -= DIR_Y * MOVE_SPEED;
 	}
 	if (KEYCODE == 53)
 		mlx_free(mlx);
+	printf ("POS_X = %f | POS_Y = %f\n", POS_X, POS_Y);
 	redraw_raytracing(mlx);
 	return (0);
 }

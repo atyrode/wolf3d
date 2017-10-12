@@ -15,6 +15,7 @@ void    hit_rt(t_mlx *mlx)
     MAP_Y = MAP_Y + STEP_Y;
     SIDE = 1;
   }
+  //printf ("MAP_X = %d | MAP_Y = %d | if this is the last message, it means it crashes here\n", MAP_X, MAP_Y);
   if (GRID[MAP_X][MAP_Y] > 0)
     HIT = 1;
   //printf ("SIDE = %d\n", SIDE);
@@ -26,23 +27,28 @@ void    check_rt_init(t_mlx *mlx)
   {
     STEP_X = -1;
     SIDE_DIST_X = (RAY_POS_X - MAP_X) * DELTA_DIST_X;
+      //printf ("SIDE_DIST_X (%f) = (RAY_POS_X (%f) - MAP_X (%d)) * DELTA_DIST_X (%f)\n", SIDE_DIST_X, RAY_POS_X, MAP_X, DELTA_DIST_X);
   }
   else
   {
     STEP_X = 1;
+
     SIDE_DIST_X = (MAP_X + 1.0 - RAY_POS_X) * DELTA_DIST_X;
+    //printf ("SIDE_DIST_X (%f) = (MAP_X (%d) + 1.0 - RAY_POS_X (%f)) * DELTA_DIST_X (%f)\n", SIDE_DIST_X, MAP_X, RAY_POS_X, DELTA_DIST_X);
   }
   if (RAY_DIR_Y < 0)
   {
     STEP_Y = -1;
     SIDE_DIST_Y = (RAY_POS_Y - MAP_Y) * DELTA_DIST_Y;
+    //printf ("SIDE_DIST_Y (%f) = (RAY_POS_Y (%f) - MAP_Y (%d)) * DELTA_DIST_Y (%f)\n", SIDE_DIST_Y, RAY_POS_Y, MAP_Y, DELTA_DIST_Y);
   }
   else
   {
     STEP_Y = 1;
+
     SIDE_DIST_Y = (MAP_Y + 1.0 - RAY_POS_Y) * DELTA_DIST_Y;
+      //printf ("SIDE_DIST_Y (%f) = (MAP_Y (%d) + 1.0 - RAY_POS_Y (%f)) * DELTA_DIST_Y (%f)\n", SIDE_DIST_Y, MAP_Y, RAY_POS_Y, DELTA_DIST_Y);
   }
-  printf ("SIDE_DIST_X (%f) | SIDE_DIST_Y (%f)\n", SIDE_DIST_X, SIDE_DIST_Y);
   return ;
 }
 
@@ -50,13 +56,13 @@ void    rt_loop_init(t_mlx *mlx, int i)
 {
 
     CAMERA_X = 2 * i / (double)W_WIDTH - 1;
-    printf ("CAMERA_X (%f) = 2 * i (%d) / (double)(W_WIDTH (%d) - 1)\n", CAMERA_X, i, W_WIDTH);
+    //printf ("CAMERA_X (%f) = 2 * i (%d) / (double)(W_WIDTH (%d) - 1)\n", CAMERA_X, i, W_WIDTH);
     RAY_POS_X = POS_X;
     RAY_POS_Y = POS_Y;
     RAY_DIR_X = DIR_X + PLANE_X * CAMERA_X;
-    printf ("RAY_DIR_X (%f) = DIR_X (%f) + PLANE_X (%f) * CAMERA_X (%f)\n", RAY_DIR_X, DIR_X, PLANE_X, CAMERA_X);
+    //printf ("RAY_DIR_X (%f) = DIR_X (%f) + PLANE_X (%f) * CAMERA_X (%f)\n", RAY_DIR_X, DIR_X, PLANE_X, CAMERA_X);
     RAY_DIR_Y = DIR_Y + PLANE_Y * CAMERA_X;
-    printf ("RAY_DIR_Y (%f) = DIR_Y (%f) + PLANE_Y (%f) * CAMERA_X (%f)\n", RAY_DIR_Y, DIR_Y, PLANE_Y, CAMERA_X);
+    //printf ("RAY_DIR_Y (%f) = DIR_Y (%f) + PLANE_Y (%f) * CAMERA_X (%f)\n", RAY_DIR_Y, DIR_Y, PLANE_Y, CAMERA_X);
     MAP_X = (int)(RAY_POS_X);
     MAP_Y = (int)(RAY_POS_Y);
     DELTA_DIST_X = sqrt(1 + (RAY_DIR_Y * RAY_DIR_Y) / (RAY_DIR_X * RAY_DIR_X));
@@ -69,8 +75,8 @@ void    rt_loop_init(t_mlx *mlx, int i)
 
 void    rt_init(t_mlx *mlx)
 {
-    POS_X = 5;
-    POS_Y = 5;
+    POS_X = 2;
+    POS_Y = 2;
     DIR_X = -1;
     DIR_Y = 0;
     PLANE_X = 0;
@@ -89,27 +95,27 @@ void		raytracing(t_mlx *mlx)
   while (i <= W_WIDTH)
   {
     //printf ("%d < %d\n", i, W_WIDTH);
-    printf ("POS_X = %f | POS_Y = %f\n", POS_X, POS_Y);
+    //printf ("POS_X = %f | POS_Y = %f\n", POS_X, POS_Y);
       rt_loop_init(mlx, i);
       while (HIT == 0)
           hit_rt(mlx);
       if (SIDE == 0)
       {
           PERP_WALL_DIST = (MAP_X - RAY_POS_X + (1 - STEP_X) / 2) / RAY_DIR_X;
-          printf ("PERP_WALL_DIST (%f) = (MAP_X (%d) - RAY_POS_X (%f) + (1 - STEP_X (%d) / 2) / RAY_DIR_X (%f)\n", PERP_WALL_DIST, MAP_X, RAY_POS_X, STEP_X, RAY_DIR_X);
+          //printf ("PERP_WALL_DIST (%f) = (MAP_X (%d) - RAY_POS_X (%f) + (1 - STEP_X (%d) / 2) / RAY_DIR_X (%f)\n", PERP_WALL_DIST, MAP_X, RAY_POS_X, STEP_X, RAY_DIR_X);
       }
       else
       {
           PERP_WALL_DIST = (MAP_Y - RAY_POS_Y + (1 - STEP_Y) / 2) / RAY_DIR_Y;
-          printf ("PERP_WALL_DIST (%f) = (MAP_Y (%d) - RAY_POS_Y (%f) + (1 - STEP_Y (%d) / 2) / RAY_DIR_Y (%f)\n", PERP_WALL_DIST, MAP_Y, RAY_POS_Y, STEP_Y, RAY_DIR_Y);
+          //printf ("PERP_WALL_DIST (%f) = (MAP_Y (%d) - RAY_POS_Y (%f) + (1 - STEP_Y (%d) / 2) / RAY_DIR_Y (%f)\n", PERP_WALL_DIST, MAP_Y, RAY_POS_Y, STEP_Y, RAY_DIR_Y);
       }
       LINE_HEIGHT = (int)(W_HEIGHT / PERP_WALL_DIST);
-      printf ("LINE_HEIGHT (%d) = (int)(W_HEIGHT (%d) / PERP_WALL_DIST (%f))\n", LINE_HEIGHT, W_HEIGHT, PERP_WALL_DIST);
+      //printf ("LINE_HEIGHT (%d) = (int)(W_HEIGHT (%d) / PERP_WALL_DIST (%f))\n", LINE_HEIGHT, W_HEIGHT, PERP_WALL_DIST);
       if ((DRAW_START = -LINE_HEIGHT / 2 + W_HEIGHT / 2) < 0)
           DRAW_START = 0;
       if ((DRAW_END = LINE_HEIGHT / 2 + W_HEIGHT / 2) >= W_HEIGHT)
       {
-        printf ("DRAW_END (%d) = LINE_HEIGHT (%d) / 2 + W_HEIGHT (%d) / 2) >= W_HEIGHT (%d)\n", DRAW_END, LINE_HEIGHT, W_HEIGHT, W_HEIGHT);
+        //printf ("DRAW_END (%d) = LINE_HEIGHT (%d) / 2 + W_HEIGHT (%d) / 2) >= W_HEIGHT (%d)\n", DRAW_END, LINE_HEIGHT, W_HEIGHT, W_HEIGHT);
         DRAW_END = W_HEIGHT;
       }
       if (GRID[MAP_X][MAP_Y] == 1)
@@ -119,7 +125,7 @@ void		raytracing(t_mlx *mlx)
       X1 = i;
       Y1 = DRAW_START;
       Y2 = DRAW_END;
-      printf ("DRAW_START = %d | DRAW_END = %d\n\n\n  ", DRAW_START, DRAW_END);
+      //printf ("DRAW_START = %d | DRAW_END = %d\n\n\n  ", DRAW_START, DRAW_END);
       while (Y1 <= Y2)
       {
         //printf ("loop\n");
