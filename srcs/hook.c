@@ -6,7 +6,7 @@
 /*   By: atyrode <atyrode@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/05 15:27:01 by atyrode           #+#    #+#             */
-/*   Updated: 2017/10/12 14:52:51 by atyrode          ###   ########.fr       */
+/*   Updated: 2017/10/12 15:54:21 by atyrode          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int			key_press(int keycode, t_mlx *mlx)
 	}
 	if (KEYCODE == 53)
 		mlx_free(mlx);
-	printf ("POS_X = %f | POS_Y = %f\n", POS_X, POS_Y);
+	//printf ("POS_X = %f | POS_Y = %f\n", POS_X, POS_Y);
 	redraw_raytracing(mlx);
 	return (0);
 }

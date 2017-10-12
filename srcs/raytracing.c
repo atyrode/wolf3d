@@ -21,34 +21,43 @@ void    hit_rt(t_mlx *mlx)
   //printf ("SIDE = %d\n", SIDE);
 }
 
-void    check_rt_init(t_mlx *mlx)
+void    check_rt_init(t_mlx *mlx, int i)
 {
   if (RAY_DIR_X < 0)
   {
     STEP_X = -1;
     SIDE_DIST_X = (RAY_POS_X - MAP_X) * DELTA_DIST_X;
-      //printf ("SIDE_DIST_X (%f) = (RAY_POS_X (%f) - MAP_X (%d)) * DELTA_DIST_X (%f)\n", SIDE_DIST_X, RAY_POS_X, MAP_X, DELTA_DIST_X);
+    if (i == W_WIDTH / 2)
+    printf ("1 - STEP_X = %d\n", STEP_X);
+    //printf ("4 - SIDE_DIST_X (%f) = (RAY_POS_X (%f) - MAP_X (%d)) * DELTA_DIST_X (%f)\n", SIDE_DIST_X, RAY_POS_X, MAP_X, DELTA_DIST_X);
   }
   else
   {
     STEP_X = 1;
 
     SIDE_DIST_X = (MAP_X + 1.0 - RAY_POS_X) * DELTA_DIST_X;
-    //printf ("SIDE_DIST_X (%f) = (MAP_X (%d) + 1.0 - RAY_POS_X (%f)) * DELTA_DIST_X (%f)\n", SIDE_DIST_X, MAP_X, RAY_POS_X, DELTA_DIST_X);
+    if (i == W_WIDTH / 2)
+    printf ("2 - STEP_X = %d\n", STEP_X);
+    //printf (" 3 - SIDE_DIST_X (%f) = (MAP_X (%d) + 1.0 - RAY_POS_X (%f)) * DELTA_DIST_X (%f)\n", SIDE_DIST_X, MAP_X, RAY_POS_X, DELTA_DIST_X);
   }
   if (RAY_DIR_Y < 0)
   {
     STEP_Y = -1;
     SIDE_DIST_Y = (RAY_POS_Y - MAP_Y) * DELTA_DIST_Y;
-    //printf ("SIDE_DIST_Y (%f) = (RAY_POS_Y (%f) - MAP_Y (%d)) * DELTA_DIST_Y (%f)\n", SIDE_DIST_Y, RAY_POS_Y, MAP_Y, DELTA_DIST_Y);
+    if (i == W_WIDTH / 2)
+    printf ("3 - STEP_Y = %d\n", STEP_Y);
+    //printf ("2 - SIDE_DIST_Y (%f) = (RAY_POS_Y (%f) - MAP_Y (%d)) * DELTA_DIST_Y (%f)\n", SIDE_DIST_Y, RAY_POS_Y, MAP_Y, DELTA_DIST_Y);
   }
   else
   {
     STEP_Y = 1;
 
     SIDE_DIST_Y = (MAP_Y + 1.0 - RAY_POS_Y) * DELTA_DIST_Y;
-      //printf ("SIDE_DIST_Y (%f) = (MAP_Y (%d) + 1.0 - RAY_POS_Y (%f)) * DELTA_DIST_Y (%f)\n", SIDE_DIST_Y, MAP_Y, RAY_POS_Y, DELTA_DIST_Y);
+    if (i == W_WIDTH / 2)
+    printf ("4 - STEP_Y = %d\n", STEP_Y);
+      //printf ("1 - SIDE_DIST_Y (%f) = (MAP_Y (%d) + 1.0 - RAY_POS_Y (%f)) * DELTA_DIST_Y (%f)\n", SIDE_DIST_Y, MAP_Y, RAY_POS_Y, DELTA_DIST_Y);
   }
+
   return ;
 }
 
@@ -69,7 +78,7 @@ void    rt_loop_init(t_mlx *mlx, int i)
     DELTA_DIST_Y = sqrt(1 + (RAY_DIR_X * RAY_DIR_X) / (RAY_DIR_Y * RAY_DIR_Y));
     HIT = 0;
     SIDE = 0;
-    check_rt_init(mlx);
+    check_rt_init(mlx, i);
     return ;
 }
 
@@ -118,14 +127,33 @@ void		raytracing(t_mlx *mlx)
         //printf ("DRAW_END (%d) = LINE_HEIGHT (%d) / 2 + W_HEIGHT (%d) / 2) >= W_HEIGHT (%d)\n", DRAW_END, LINE_HEIGHT, W_HEIGHT, W_HEIGHT);
         DRAW_END = W_HEIGHT;
       }
-      if (GRID[MAP_X][MAP_Y] == 1)
-          COLOR = 0x5555AA;
-      if (SIDE == 1)
-          COLOR = COLOR / 2;
       X1 = i;
       Y1 = DRAW_START;
       Y2 = DRAW_END;
-      //printf ("DRAW_START = %d | DRAW_END = %d\n\n\n  ", DRAW_START, DRAW_END);
+      if (i == W_WIDTH / 2)
+        printf ("SIDE = %d\n", SIDE);
+      if (GRID[MAP_X][MAP_Y] == 1)
+      {
+        if (STEP_X == -1 && STEP_Y == -1 && SIDE == 1)
+            COLOR = 0x5555AA;
+        if (STEP_X == 1 && STEP_Y == -1 && SIDE == 1)
+            COLOR = 0x5555AA;
+        if (STEP_X == -1 && STEP_Y == 1 && SIDE == 1)
+            COLOR = 0xBB2211;
+        if (STEP_X == 1 && STEP_Y == 1 && SIDE == 1)
+            COLOR = 0xBB2211;
+        if (STEP_X == -1 && STEP_Y == -1 && SIDE == 0)
+            COLOR = 0x11AABB;
+        if (STEP_X == 1 && STEP_Y == -1 && SIDE == 0)
+            COLOR = 0xAA55AA;
+        if (STEP_X == -1 && STEP_Y == 1 && SIDE == 0)
+            COLOR = 0x11AABB;
+        if (STEP_X == 1 && STEP_Y == 1 && SIDE == 0)
+            COLOR = 0xAA55AA;
+      }
+      //if (SIDE == 1)
+        //COLOR = COLOR / 2;
+    //printf ("DRAW_START = %d | DRAW_END = %d\n\n\n  ", DRAW_START, DRAW_END);
       while (Y1 <= Y2)
       {
         //printf ("loop\n");
@@ -134,7 +162,7 @@ void		raytracing(t_mlx *mlx)
       }
       Y1 = DRAW_START;
       COLOR = 0x00AA00 / 2;
-      while (Y1 - 1 >= 0)
+      while (Y1 >= 0)
       {
         image_set_pixel(mlx);
         Y1--;
@@ -143,8 +171,8 @@ void		raytracing(t_mlx *mlx)
       COLOR = 0x00AA00;
       while (Y1 <= W_HEIGHT && Y1 >= 0)
       {
-        if (DRAW_END <= 0 || DRAW_START <= 0)
-        COLOR = 0x000000;
+        //if (DRAW_END <= 0 || DRAW_START <= 0)
+        //COLOR = 0x000000;
         image_set_pixel(mlx);
         //printf ("stuck\n");
         Y1++;

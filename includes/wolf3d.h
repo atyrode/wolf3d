@@ -10,8 +10,8 @@
 #include <unistd.h>
 #include <time.h>
 
-#define W_WIDTH 896
-#define W_HEIGHT 800
+#define W_WIDTH 1792
+#define W_HEIGHT 1600
 
 #define COORD_X mlx->env->x
 #define COORD_Y mlx->env->y

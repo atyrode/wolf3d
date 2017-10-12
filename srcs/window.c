@@ -6,7 +6,7 @@
 /*   By: atyrode <atyrode@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/30 19:23:07 by atyrode           #+#    #+#             */
-/*   Updated: 2017/10/09 17:18:35 by atyrode          ###   ########.fr       */
+/*   Updated: 2017/10/12 17:15:30 by atyrode          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_mlx		*initialize(void)
 		return (NULL);
 	if ((mlx->mlx = mlx_init()) == NULL
 		|| (mlx->win = mlx_new_window(mlx->mlx, W_WIDTH, W_HEIGHT,
-			"Fract'Ol")) == NULL
+			"Wolf3D")) == NULL
 		|| (mlx->image = new_image(mlx)) == NULL
 		|| (mlx->rt = ft_memalloc(sizeof(t_rt))) == NULL
 		|| (mlx->algo = ft_memalloc(sizeof(t_rosette))) == NULL
