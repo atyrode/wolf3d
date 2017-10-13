@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: atyrode <atyrode@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/13 19:41:03 by atyrode           #+#    #+#             */
+/*   Updated: 2017/10/13 19:50:36 by atyrode          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./../includes/wolf3d.h"
 #include <stdio.h>
 
@@ -7,7 +19,7 @@ void	test_print_tab(int **grid, int line_value)
 	int j;
 
 	i = 0;
-	printf ("map:\n-----\n");
+	printf("map:\n-----\n");
 	while (i < line_value)
 	{
 		j = 0;
@@ -35,10 +47,10 @@ int		ft_count(char **tab)
 
 int		**parse_in_int(char **tab, int line_value)
 {
-	int **grid;
-	char **tmp;
-	int i;
-	int j;
+	int		**grid;
+	char	**tmp;
+	int		i;
+	int		j;
 
 	i = 0;
 	if ((grid = (int **)malloc(sizeof(int*) * line_value)) == NULL)
@@ -64,9 +76,9 @@ int		**parse_in_int(char **tab, int line_value)
 
 char	**fill_tab(int line_value, char *file)
 {
-	int fd;
-	int i;
-	char **tab;
+	int		fd;
+	int		i;
+	char	**tab;
 
 	i = 0;
 	if ((tab = (char**)malloc(sizeof(char*) * line_value)) == NULL)
@@ -88,12 +100,8 @@ int		parsing(char *filename, t_mlx *mlx)
 
 	fd = open(filename, O_RDONLY, S_IREAD);
 	Y_NBR = 0;
-	while (get_next_line(fd , &buffer) > 0)
-	{
+	while (get_next_line(fd, &buffer) > 0)
 		Y_NBR++;
-		//printf("buffer=%s\n", buffer);
-	}
-	//printf("lines_value = %d\n", Y_NBR);
 	free(buffer);
 	close(fd);
 	tab = fill_tab(Y_NBR, filename);

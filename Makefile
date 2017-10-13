@@ -6,7 +6,7 @@
 #    By: atyrode <atyrode@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/30 18:19:00 by atyrode           #+#    #+#              #
-#    Updated: 2017/10/11 21:29:57 by atyrode          ###   ########.fr        #
+#    Updated: 2017/10/13 19:48:38 by atyrode          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,8 +20,7 @@ SRC = 	srcs/main.c \
 		srcs/image.c \
 		srcs/window.c \
 		srcs/hook.c \
-		srcs/raytracing.c \
-		srcs/drawing.c
+		srcs/raytracing.c
 
 O_FILES = $(SRC:.c=.o)
 MLX_LIB = -L/usr/local/lib -lmlx -L. ./minilibx_macos/libmlx.a -framework OpenGL -framework Appkit

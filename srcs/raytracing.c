@@ -1,200 +1,129 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raytracing.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: atyrode <atyrode@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/13 19:41:24 by atyrode           #+#    #+#             */
+/*   Updated: 2017/10/13 19:54:02 by atyrode          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "./../includes/wolf3d.h"
 
-void    hit_rt(t_mlx *mlx)
+void	hit_rt(t_mlx *mlx)
 {
-  if (SIDE_DIST_X < SIDE_DIST_Y)
-  {
-    SIDE_DIST_X = SIDE_DIST_X + DELTA_DIST_X;
-    MAP_X = MAP_X + STEP_X;
-    SIDE = 0;
-  }
-  else
-  {
-    SIDE_DIST_Y = SIDE_DIST_Y + DELTA_DIST_Y;
-    MAP_Y = MAP_Y + STEP_Y;
-    SIDE = 1;
-  }
-  //printf ("MAP_X = %d | MAP_Y = %d | if this is the last message, it means it crashes here\n", MAP_X, MAP_Y);
-  if (GRID[MAP_X][MAP_Y] > 0)
-    HIT = 1;
-  //printf ("SIDE = %d\n", SIDE);
+	if (SIDE_DIST_X < SIDE_DIST_Y)
+	{
+		SIDE_DIST_X = SIDE_DIST_X + DELTA_DIST_X;
+		MAP_X = MAP_X + STEP_X;
+		SIDE = 0;
+	}
+	else
+	{
+		SIDE_DIST_Y = SIDE_DIST_Y + DELTA_DIST_Y;
+		MAP_Y = MAP_Y + STEP_Y;
+		SIDE = 1;
+	}
+	if (GRID[MAP_X][MAP_Y] > 0)
+		HIT = 1;
 }
 
-void    check_rt_init(t_mlx *mlx, int i)
+void	check_rt_init(t_mlx *mlx)
 {
-  if (RAY_DIR_X < 0)
-  {
-    STEP_X = -1;
-    SIDE_DIST_X = (RAY_POS_X - MAP_X) * DELTA_DIST_X;
-    if (i == W_WIDTH / 2)
-    printf ("1 - STEP_X = %d\n", STEP_X);
-    //printf ("4 - SIDE_DIST_X (%f) = (RAY_POS_X (%f) - MAP_X (%d)) * DELTA_DIST_X (%f)\n", SIDE_DIST_X, RAY_POS_X, MAP_X, DELTA_DIST_X);
-  }
-  else
-  {
-    STEP_X = 1;
-
-    SIDE_DIST_X = (MAP_X + 1.0 - RAY_POS_X) * DELTA_DIST_X;
-    if (i == W_WIDTH / 2)
-    printf ("2 - STEP_X = %d\n", STEP_X);
-    //printf (" 3 - SIDE_DIST_X (%f) = (MAP_X (%d) + 1.0 - RAY_POS_X (%f)) * DELTA_DIST_X (%f)\n", SIDE_DIST_X, MAP_X, RAY_POS_X, DELTA_DIST_X);
-  }
-  if (RAY_DIR_Y < 0)
-  {
-    STEP_Y = -1;
-    SIDE_DIST_Y = (RAY_POS_Y - MAP_Y) * DELTA_DIST_Y;
-    if (i == W_WIDTH / 2)
-    printf ("3 - STEP_Y = %d\n", STEP_Y);
-    //printf ("2 - SIDE_DIST_Y (%f) = (RAY_POS_Y (%f) - MAP_Y (%d)) * DELTA_DIST_Y (%f)\n", SIDE_DIST_Y, RAY_POS_Y, MAP_Y, DELTA_DIST_Y);
-  }
-  else
-  {
-    STEP_Y = 1;
-
-    SIDE_DIST_Y = (MAP_Y + 1.0 - RAY_POS_Y) * DELTA_DIST_Y;
-    if (i == W_WIDTH / 2)
-    printf ("4 - STEP_Y = %d\n", STEP_Y);
-      //printf ("1 - SIDE_DIST_Y (%f) = (MAP_Y (%d) + 1.0 - RAY_POS_Y (%f)) * DELTA_DIST_Y (%f)\n", SIDE_DIST_Y, MAP_Y, RAY_POS_Y, DELTA_DIST_Y);
-  }
-
-  return ;
+	if (RAY_DIR_X < 0)
+	{
+		STEP_X = -1;
+		SIDE_DIST_X = (RAY_POS_X - MAP_X) * DELTA_DIST_X;
+	}
+	else
+	{
+		STEP_X = 1;
+		SIDE_DIST_X = (MAP_X + 1.0 - RAY_POS_X) * DELTA_DIST_X;
+	}
+	if (RAY_DIR_Y < 0)
+	{
+		STEP_Y = -1;
+		SIDE_DIST_Y = (RAY_POS_Y - MAP_Y) * DELTA_DIST_Y;
+	}
+	else
+	{
+		STEP_Y = 1;
+		SIDE_DIST_Y = (MAP_Y + 1.0 - RAY_POS_Y) * DELTA_DIST_Y;
+	}
+	return ;
 }
 
-void    rt_loop_init(t_mlx *mlx, int i)
+void	rt_loop_init(t_mlx *mlx, int i)
 {
-
-    CAMERA_X = 2 * i / (double)W_WIDTH - 1;
-    //printf ("CAMERA_X (%f) = 2 * i (%d) / (double)(W_WIDTH (%d) - 1)\n", CAMERA_X, i, W_WIDTH);
-    RAY_POS_X = POS_X;
-    RAY_POS_Y = POS_Y;
-    RAY_DIR_X = DIR_X + PLANE_X * CAMERA_X;
-    //printf ("RAY_DIR_X (%f) = DIR_X (%f) + PLANE_X (%f) * CAMERA_X (%f)\n", RAY_DIR_X, DIR_X, PLANE_X, CAMERA_X);
-    RAY_DIR_Y = DIR_Y + PLANE_Y * CAMERA_X;
-    //printf ("RAY_DIR_Y (%f) = DIR_Y (%f) + PLANE_Y (%f) * CAMERA_X (%f)\n", RAY_DIR_Y, DIR_Y, PLANE_Y, CAMERA_X);
-    MAP_X = (int)(RAY_POS_X);
-    MAP_Y = (int)(RAY_POS_Y);
-    DELTA_DIST_X = sqrt(1 + (RAY_DIR_Y * RAY_DIR_Y) / (RAY_DIR_X * RAY_DIR_X));
-    DELTA_DIST_Y = sqrt(1 + (RAY_DIR_X * RAY_DIR_X) / (RAY_DIR_Y * RAY_DIR_Y));
-    HIT = 0;
-    SIDE = 0;
-    check_rt_init(mlx, i);
-    return ;
+	CAMERA_X = 2 * i / (double)W_WIDTH - 1;
+	RAY_POS_X = POS_X;
+	RAY_POS_Y = POS_Y;
+	RAY_DIR_X = DIR_X + PLANE_X * CAMERA_X;
+	RAY_DIR_Y = DIR_Y + PLANE_Y * CAMERA_X;
+	MAP_X = (int)(RAY_POS_X);
+	MAP_Y = (int)(RAY_POS_Y);
+	DELTA_DIST_X = sqrt(1 + (RAY_DIR_Y * RAY_DIR_Y) / (RAY_DIR_X * RAY_DIR_X));
+	DELTA_DIST_Y = sqrt(1 + (RAY_DIR_X * RAY_DIR_X) / (RAY_DIR_Y * RAY_DIR_Y));
+	HIT = 0;
+	SIDE = 0;
+	check_rt_init(mlx);
+	return ;
 }
 
-void    rt_init(t_mlx *mlx)
+void	rt_colors(t_mlx *mlx, int i)
 {
-    POS_X = 2;
-    POS_Y = 2;
-    DIR_X = -1;
-    DIR_Y = 0;
-    PLANE_X = 0;
-    PLANE_Y = 0.66;
-    CUR_FRAME = 0;
-    OLD_FRAME = 0;
-    return ;
+	X1 = i;
+	Y1 = DRAW_START;
+	Y2 = DRAW_END;
+	if (GRID[MAP_X][MAP_Y] == 1)
+	{
+		if (STEP_X == -1 && STEP_Y == -1)
+			COLOR = (SIDE == 1) ? 0x594F4F / 2 : 0x9DE0AD;
+		else if (STEP_X == 1 && STEP_Y == -1)
+			COLOR = (SIDE == 1) ? 0x594F4F / 2 : 0xE5FCC2;
+		else if (STEP_X == -1 && STEP_Y == 1)
+			COLOR = (SIDE == 1) ? 0x45ADA8 : 0x9DE0AD;
+		else if (STEP_X == 1 && STEP_Y == 1)
+			COLOR = (SIDE == 1) ? 0x45ADA8 : 0xE5FCC2;
+	}
+	while (Y1++ <= Y2)
+		image_set_pixel(mlx);
+	Y1 = DRAW_START + 1;
+	COLOR = 0x594F4F;
+	while (Y1-- >= 0)
+		image_set_pixel(mlx);
+	Y1 = DRAW_END;
+	COLOR = 0x547980;
+	while (Y1++ <= W_HEIGHT && Y1 >= 0)
+		image_set_pixel(mlx);
 }
 
-void		raytracing(t_mlx *mlx)
+void	raytracing(t_mlx *mlx)
 {
-  int   i;
+	int	i;
 
-  i = 0;
-  //printf ("RT!\n");
-  while (i <= W_WIDTH)
-  {
-    //printf ("%d < %d\n", i, W_WIDTH);
-    //printf ("POS_X = %f | POS_Y = %f\n", POS_X, POS_Y);
-      rt_loop_init(mlx, i);
-      while (HIT == 0)
-          hit_rt(mlx);
-      if (SIDE == 0)
-      {
-          PERP_WALL_DIST = (MAP_X - RAY_POS_X + (1 - STEP_X) / 2) / RAY_DIR_X;
-          //printf ("PERP_WALL_DIST (%f) = (MAP_X (%d) - RAY_POS_X (%f) + (1 - STEP_X (%d) / 2) / RAY_DIR_X (%f)\n", PERP_WALL_DIST, MAP_X, RAY_POS_X, STEP_X, RAY_DIR_X);
-      }
-      else
-      {
-          PERP_WALL_DIST = (MAP_Y - RAY_POS_Y + (1 - STEP_Y) / 2) / RAY_DIR_Y;
-          //printf ("PERP_WALL_DIST (%f) = (MAP_Y (%d) - RAY_POS_Y (%f) + (1 - STEP_Y (%d) / 2) / RAY_DIR_Y (%f)\n", PERP_WALL_DIST, MAP_Y, RAY_POS_Y, STEP_Y, RAY_DIR_Y);
-      }
-      LINE_HEIGHT = (int)(W_HEIGHT / PERP_WALL_DIST);
-      //printf ("LINE_HEIGHT (%d) = (int)(W_HEIGHT (%d) / PERP_WALL_DIST (%f))\n", LINE_HEIGHT, W_HEIGHT, PERP_WALL_DIST);
-      if ((DRAW_START = -LINE_HEIGHT / 2 + W_HEIGHT / 2) < 0)
-          DRAW_START = 0;
-      if ((DRAW_END = LINE_HEIGHT / 2 + W_HEIGHT / 2) >= W_HEIGHT)
-      {
-        //printf ("DRAW_END (%d) = LINE_HEIGHT (%d) / 2 + W_HEIGHT (%d) / 2) >= W_HEIGHT (%d)\n", DRAW_END, LINE_HEIGHT, W_HEIGHT, W_HEIGHT);
-        DRAW_END = W_HEIGHT;
-      }
-      X1 = i;
-      Y1 = DRAW_START;
-      Y2 = DRAW_END;
-      if (i == W_WIDTH / 2)
-        printf ("SIDE = %d\n", SIDE);
-      if (GRID[MAP_X][MAP_Y] == 1)
-      {
-        if (STEP_X == -1 && STEP_Y == -1 && SIDE == 1)
-            COLOR = 0x5555AA;
-        if (STEP_X == 1 && STEP_Y == -1 && SIDE == 1)
-            COLOR = 0x5555AA;
-        if (STEP_X == -1 && STEP_Y == 1 && SIDE == 1)
-            COLOR = 0xBB2211;
-        if (STEP_X == 1 && STEP_Y == 1 && SIDE == 1)
-            COLOR = 0xBB2211;
-        if (STEP_X == -1 && STEP_Y == -1 && SIDE == 0)
-            COLOR = 0x11AABB;
-        if (STEP_X == 1 && STEP_Y == -1 && SIDE == 0)
-            COLOR = 0xAA55AA;
-        if (STEP_X == -1 && STEP_Y == 1 && SIDE == 0)
-            COLOR = 0x11AABB;
-        if (STEP_X == 1 && STEP_Y == 1 && SIDE == 0)
-            COLOR = 0xAA55AA;
-      }
-      //if (SIDE == 1)
-        //COLOR = COLOR / 2;
-    //printf ("DRAW_START = %d | DRAW_END = %d\n\n\n  ", DRAW_START, DRAW_END);
-      while (Y1 <= Y2)
-      {
-        //printf ("loop\n");
-		     image_set_pixel(mlx);
-         Y1++;
-      }
-      Y1 = DRAW_START;
-      COLOR = 0x00AA00 / 2;
-      while (Y1 >= 0)
-      {
-        image_set_pixel(mlx);
-        Y1--;
-      }
-      Y1 = DRAW_END;
-      COLOR = 0x00AA00;
-      while (Y1 <= W_HEIGHT && Y1 >= 0)
-      {
-        //if (DRAW_END <= 0 || DRAW_START <= 0)
-        //COLOR = 0x000000;
-        image_set_pixel(mlx);
-        //printf ("stuck\n");
-        Y1++;
-      }
-      OLD_FRAME = CUR_FRAME;
-      CUR_FRAME = clock();
-      FRAME = (CUR_FRAME - OLD_FRAME) / 1000.0;
-      MOVE_SPEED = FRAME * 30.0;
-      ROT_SPEED = FRAME * 18.0;
-	  //ft_line_tracer(mlx, i);
-      i++;
-      //printf ("i = %d\n", i);
-  }
-  return ;
-}
-
-void    redraw_raytracing(t_mlx *mlx)
-{
-  mlx_clear_window(mlx->mlx, mlx->win);
-	delete_image(mlx);
-	new_image(mlx);
-	raytracing(mlx);
-	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->image->image, 0, 0);
-	mlx_do_sync(mlx->mlx);
+	i = 0;
+	while (i <= W_WIDTH)
+	{
+		rt_loop_init(mlx, i);
+		while (HIT == 0)
+			hit_rt(mlx);
+		PERP_WALL_DIST = (SIDE == 0) ? (MAP_X - RAY_POS_X + (1 - STEP_X) / 2)
+			/ RAY_DIR_X : (MAP_Y - RAY_POS_Y + (1 - STEP_Y) / 2) / RAY_DIR_Y;
+		LINE_HEIGHT = (int)(W_HEIGHT / PERP_WALL_DIST);
+		if ((DRAW_START = -LINE_HEIGHT / 2 + W_HEIGHT / 2) < 0)
+			DRAW_START = 0;
+		if ((DRAW_END = LINE_HEIGHT / 2 + W_HEIGHT / 2) >= W_HEIGHT)
+			DRAW_END = W_HEIGHT;
+		rt_colors(mlx, i);
+		OLD_FRAME = CUR_FRAME;
+		CUR_FRAME = clock();
+		FRAME = (CUR_FRAME - OLD_FRAME) / 1000.0;
+		MOVE_SPEED = FRAME * 30.0;
+		ROT_SPEED = FRAME * 18.0;
+		i++;
+	}
+	return ;
 }
