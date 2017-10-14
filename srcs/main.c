@@ -6,7 +6,7 @@
 /*   By: atyrode <atyrode@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/13 19:40:36 by atyrode           #+#    #+#             */
-/*   Updated: 2017/10/13 19:45:35 by atyrode          ###   ########.fr       */
+/*   Updated: 2017/10/13 23:35:16 by atyrode          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,12 @@ void	redraw_raytracing(t_mlx *mlx)
 int		main(int argc, char **argv)
 {
 	t_mlx	*mlx;
-	char	*filename;
 
 	if (!(argc == 1) || !(argv))
 		return (-1);
 	if ((mlx = initialize()) == NULL)
 		return (-1);
-	filename = "maps/map.wolf";
-	if (parsing(filename, mlx) == 0)
-		printf("parsing -> OK!\n");
+	parsing("maps/map.wolf", mlx);
 	hooks(mlx);
 	rt_init(mlx);
 	raytracing(mlx);

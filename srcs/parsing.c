@@ -6,34 +6,12 @@
 /*   By: atyrode <atyrode@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/13 19:41:03 by atyrode           #+#    #+#             */
-/*   Updated: 2017/10/13 19:50:36 by atyrode          ###   ########.fr       */
+/*   Updated: 2017/10/13 23:24:11 by atyrode          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../includes/wolf3d.h"
 #include <stdio.h>
-
-void	test_print_tab(int **grid, int line_value)
-{
-	int i;
-	int j;
-
-	i = 0;
-	printf("map:\n-----\n");
-	while (i < line_value)
-	{
-		j = 0;
-		while (grid[i][j] != -42)
-		{
-			printf("%d", grid[i][j]);
-			j++;
-		}
-		printf("\n");
-		i++;
-	}
-	printf("-----\n");
-	return ;
-}
 
 int		ft_count(char **tab)
 {
@@ -43,6 +21,17 @@ int		ft_count(char **tab)
 	while (tab[count] != 0)
 		count++;
 	return (count);
+}
+
+void	*free_tab(char **tmp)
+{
+	int		k;
+
+	k = -1;
+	while (tmp[++k])
+		free(tmp[k]);
+	free(tmp);
+	return (NULL);
 }
 
 int		**parse_in_int(char **tab, int line_value)
@@ -67,8 +56,7 @@ int		**parse_in_int(char **tab, int line_value)
 			j++;
 		}
 		grid[i][j] = -42;
-		free(tmp);
-		tmp = NULL;
+		tmp = free_tab(tmp);
 		i++;
 	}
 	return (grid);
@@ -97,16 +85,22 @@ int		parsing(char *filename, t_mlx *mlx)
 	int		fd;
 	char	*buffer;
 	char	**tab;
+	int		k;
 
+	k = -1;
 	fd = open(filename, O_RDONLY, S_IREAD);
 	Y_NBR = 0;
 	while (get_next_line(fd, &buffer) > 0)
+	{
 		Y_NBR++;
+		free(buffer);
+	}
 	free(buffer);
 	close(fd);
 	tab = fill_tab(Y_NBR, filename);
 	GRID = parse_in_int(tab, Y_NBR);
+	while (++k < Y_NBR)
+		free(tab[k]);
 	free(tab);
-	test_print_tab(GRID, Y_NBR);
 	return (0);
 }
